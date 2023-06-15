@@ -21,4 +21,10 @@ python demo.py
 
 ### Todo:
 
-write some nice tasks in `curriculum.json`.
+1. write some nice tasks in `curriculum.json`.
+
+2. giving reward
+
+3. step by step reward
+
+4. rendering? monitoring?
