@@ -1,0 +1,11 @@
+{
+    "tasks": {
+        "1": {
+            "category": "Python",
+            "docker": "python:alpine3.18",
+            "title": "Hello World",
+            "description": "Write a Python file `hello.py` printing the string 'Hello, World!'",
+            "test": "Entering the command `python hello.py` should print the string 'Hello, World!'"
+        }
+    }
+}

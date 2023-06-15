@@ -1,27 +1,36 @@
 import gymnasium as gym
 from gymnasium import spaces
-
+import string
+import json
+import docker
 
 class CodeCraftEnv(gym.Env):
     def __init__(self):
-        self.observation_space = spaces.Dict({"obs": spaces.Text(1024)})
-        self.action_space = spaces.Text(10)
+        self.observation_space = spaces.Dict({"obs": spaces.Text(1024, charset=string.printable)})
+        self.action_space = spaces.Text(10, charset=string.printable)
+        self.client = docker.from_env()
+        self.container = None
 
-    def _get_obs(self):
-        return {"obs": "\n"}
-    
-    def _get_info(self):
-        return {"info": "\n"}
-    
-    def reset(self):
-        pass
+    def reset(self, task_id="1", seed=None, options=None):
+        # TODO: read curriculum.json to get the task
+        with open('curriculum.json', 'r') as file:
+            curriculum_data = json.load(file)
+        if task_id in curriculum_data['tasks']:
+            task = curriculum_data['tasks'][task_id]
+            docker_image = task['docker']
+            self.container = self.client.containers.run(docker_image, command="/bin/sh", working_dir="/root", detach=True, tty=True, remove=True)
+            return {"obs": f"Task {task_id}:\n {task}\n"}, {}
+
+        else:
+            return {"obs": f"Task {task_id} not found.\n"}, {}
 
     def step(self, action):
-        # An episode is done iff the agent has reached the target
+        exec_result = self.container.exec_run(action)
+
         terminated = False
         reward = 1 if terminated else 0  # Binary sparse rewards
-        observation = self._get_obs()
-        info = self._get_info()
+        observation = {"obs": exec_result.output.decode('utf-8')}
+        info = {"info": ""}
 
         return observation, reward, terminated, False, info
     
@@ -29,4 +38,5 @@ class CodeCraftEnv(gym.Env):
         pass
 
     def close(self):
-        pass
+        if (self.container):
+            self.container.stop()
