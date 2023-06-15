@@ -18,14 +18,16 @@ class CodeCraftEnv(gym.Env):
         if task_id in curriculum_data['tasks']:
             task = curriculum_data['tasks'][task_id]
             docker_image = task['docker']
-            self.container = self.client.containers.run(docker_image, command="/bin/sh", working_dir="/root", detach=True, tty=True, remove=True)
+            shell = task['shell']
+            working_dir = task['working_dir']
+            self.container = self.client.containers.run(docker_image, command=shell, working_dir=working_dir, detach=True, tty=True, remove=True)
             return {"obs": f"Task {task_id}:\n {task}\n"}, {}
 
         else:
             return {"obs": f"Task {task_id} not found.\n"}, {}
 
     def step(self, action):
-        exec_result = self.container.exec_run(action)
+        exec_result = self.container.exec_run(action) # type: ignore
 
         terminated = False
         reward = 1 if terminated else 0  # Binary sparse rewards
@@ -39,4 +41,4 @@ class CodeCraftEnv(gym.Env):
 
     def close(self):
         if (self.container):
-            self.container.stop()
+            self.container.stop() # type: ignore
