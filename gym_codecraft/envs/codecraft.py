@@ -8,8 +8,8 @@ import io
 
 class CodeCraftEnv(gym.Env):
     def __init__(self):
-        self.observation_space = spaces.Dict({"obs": spaces.Text(1024, charset=string.printable)})
-        self.action_space = spaces.Text(10, charset=string.printable)
+        self.observation_space = spaces.Dict({"obs": spaces.Text(4096, charset=string.printable)})
+        self.action_space = spaces.Text(4096, charset=string.printable)
         self.client = docker.from_env()     # High-level client
         self.api_client = docker.APIClient() # Low-level client
         self.container = None
