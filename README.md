@@ -9,7 +9,7 @@ There are two seperate fields: Education and Learning.
 
 In the context of RL, we can imagine two systems like this:
 
-<img src="images/env.png" alt="alt text" style="width:500px;" />
+<img src="images/env.png" alt="Reinforcement Learning" style="width:500px;" />
 
 # Requirements
 
@@ -94,6 +94,19 @@ the repository\n   merge     Join two or more development histories together\n  
 {'obs': 'Code submitted.'}
 Reward: 1
 ```
+
+# Running it with ChatGPT
+
+After running the hand-written demo, you can copy/paste to run the demo with ChatGPT, see how ChatGPT works on these tasks.
+
+```
+python demo-chatgpt.py
+```
+
+GPT-3.5 is good enough to solve all current tasks.
+
+<img src="images/chatgpt.png" alt="ChatGPT log" />
+
 
 # Still Under Construction
 
