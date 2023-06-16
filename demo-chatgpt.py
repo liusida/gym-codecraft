@@ -22,5 +22,5 @@ while True:
         print(f"Reward: {reward}")
     if (terminated):
         break
-    print("What's your next action?")
+    print("What's your next action (in one-line JSON format)?")
     print()
