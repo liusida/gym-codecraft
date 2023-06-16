@@ -42,7 +42,7 @@ class CodeCraftEnv(gym.Env):
         else:
             return {"obs": f"Task {task_id} not found.\n"}, {}
 
-    def step(self, action : str):
+    def step(self, action:str):
         terminated = False
         info = {"info": ""}
         observation = {"obs": ""}

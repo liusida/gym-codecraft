@@ -2,12 +2,15 @@
 import json
 import gymnasium
 import gym_codecraft
+from gym_codecraft.wrappers.envlogger import EnvLogger
 
 # WARNING: Clean up any existing containers (There's always too many stopped containers on my machine:)
 import docker
 docker.from_env().containers.prune()
 
 env = gymnasium.make("gym_codecraft/CodeCraft-v0")
+env = EnvLogger(env)
+
 obs, _ = env.reset()
 print(obs['obs'])
 
