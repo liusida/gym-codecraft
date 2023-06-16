@@ -101,7 +101,7 @@ Reward: 1
 
 1. write some nice tasks in `curriculum.json`.
 
-2. giving reward
+2. giving correct reward
 
 3. step by step reward
 
