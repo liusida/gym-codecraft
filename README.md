@@ -1,5 +1,5 @@
 # gym-codecraft
-An gym-like environment with a docker container sandbox for the agent to learn to code.
+A gym-like environment with a Docker container sandbox for the agent to learn to code.
 
 # Main Idea
 
