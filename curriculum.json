@@ -15,7 +15,7 @@
             "shell": "/bin/sh",
             "working_dir": "/tmp",
             "title": "Git Clone",
-            "description": "Clone a repo from github, using the URL https://github.com/liusida/gym-codecraft.git",
+            "description": "Use `apk add git` to install git. Clone a repo from github, using the URL https://github.com/liusida/gym-codecraft.git",
             "test": "Check the gym-codecraft repo is in the working directory"
         },
         "3": {
