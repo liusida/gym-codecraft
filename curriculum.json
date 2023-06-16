@@ -17,6 +17,15 @@
             "title": "Git Clone",
             "description": "Clone a repo from github, using the URL https://github.com/liusida/gym-codecraft.git",
             "test": "Check the gym-codecraft repo is in the working directory"
+        },
+        "3": {
+            "category": "Python",
+            "docker": "python:alpine3.18",
+            "shell": "/bin/sh",
+            "working_dir": "/tmp",
+            "title": "Sort",
+            "description": "Download the file at https://raw.githubusercontent.com/liusida/gym-codecraft/main/assets/3/input.txt, read the file to memory, create a list for the numbers, and sort them in ascend order. Finally, save them into `output.txt` in the working directory.",
+            "test": "Check the content of `output.txt` is `1 2 3 4 5`."
         }
     }
 }
