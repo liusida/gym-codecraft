@@ -11,13 +11,21 @@ obs = env.reset()
 print(obs)
 
 actions = [
+    {'action':'test'},
+    {'action':'reset', 'task_id':'1'},
     {'action':'lol'},
     {'action':'command', 'command':'pwd'},
     {'action':'write_file', 'path':'hello.py', 'content': 'print("Hello, world!")'},
     {'action':'command', 'command':'ls'},
     {'action':'command', 'command':'cat hello.py'},
     {'action':'command', 'command':'python hello.py'},
-    {'action':'submit'}
+    {'action':'submit'},
+    {'action':'reset', 'task_id':'2'},
+    {'action':'command', 'command':'apk update; apk add git'},
+    {'action':'command', 'command': 'git --help'},
+    {'action':'command', 'command':'git clone https://github.com/liusida/gym-codecraft.git .'},
+    {'action':'submit'},
+
 ]
 for action in actions:
     print(action)

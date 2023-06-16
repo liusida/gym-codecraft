@@ -8,6 +8,15 @@
             "title": "Hello World",
             "description": "Write a Python file `hello.py` printing the string 'Hello, World!'",
             "test": "Entering the command `python hello.py` should print the string 'Hello, World!'"
+        },
+        "2": {
+            "category": "Git",
+            "docker": "alpine:3.18",
+            "shell": "/bin/sh",
+            "working_dir": "/tmp",
+            "title": "Git Clone",
+            "description": "Clone a repo from github, using the URL https://github.com/liusida/gym-codecraft.git",
+            "test": "Check the gym-codecraft repo is in the working directory"
         }
     }
 }
