@@ -99,10 +99,12 @@ Reward: 1
 
 ### Todo:
 
-1. write some nice tasks in `curriculum.json`.
+1. Write more nice tasks in `curriculum.json`.
 
-2. giving correct reward
+2. Giving correct reward based on the "test" section. Should I use GPT-3.5-turbo to generate the testing code?
 
-3. step by step reward
+3. How to construct step-by-step rewards (e.g. [Lightman, et al. 2023](https://cdn.openai.com/improving-mathematical-reasoning-with-process-supervision/Lets_Verify_Step_by_Step.pdf))
 
-4. rendering? monitoring?
+4. How to render or monitor the environment? Having a sense of how the agent is doing.
+
+5. Make a LangChain-GPT-3.5-turbo-based agent that can play in this environment
