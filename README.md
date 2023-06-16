@@ -7,7 +7,7 @@ There are two seperate fields: Education and Learning.
 
 **Education** is about creating an environment that facilitate whoever in that environment to learn. While **Learning** is about organizing the algorithms of an agent to solve novel problems.
 
-In the context of RL, we can imagine two systems like this:
+In the context of Reinforcement Learning, we can imagine two systems like this:
 
 <img src="images/env.png" alt="Reinforcement Learning" style="width:500px;" />
 
@@ -108,11 +108,13 @@ GPT-3.5 is good enough to solve all current tasks.
 <img src="images/chatgpt.png" alt="ChatGPT log" />
 
 
-# Still Under Construction
+# I Want You
 
-### Todo:
+This project is currently developed by me alone. You are very welcome to join and contribute, please let me know! The easiest way to connect me, I guess, is through Twitter [@liusida2007](https://twitter.com/liusida2007).
 
-1. Write more nice tasks in `curriculum.json`.
+### Here are some Todo's:
+
+1. Write more nice tasks in `curriculum.json`. (This would be the meat of this project and is very important!)
 
 2. Giving correct reward based on the "test" section. Should I use GPT-3.5-turbo to generate the testing code?
 
