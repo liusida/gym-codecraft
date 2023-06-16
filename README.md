@@ -1,6 +1,16 @@
 # gym-codecraft
 An gym-like environment with a docker container sandbox for the agent to learn to code.
 
+# Main Idea
+
+There are two seperate fields: Education and Learning.
+
+**Education** is about creating an environment that facilitate whoever in that environment to learn. While **Learning** is about organizing the algorithms of an agent to solve novel problems.
+
+In the context of RL, we can imagine two systems like this:
+
+<img src="images/env.png" alt="alt text" style="width:500px;" />
+
 # Requirements
 
 I'm using Windows, so `Docker Desktop` is needed. Also the Python library `docker` is needed, which can automatically get client from the environment.
