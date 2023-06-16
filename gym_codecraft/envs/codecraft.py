@@ -18,7 +18,7 @@ class CodeCraftEnv(gym.Env):
 
     def reset(self, task_id=None, seed=None, options=None):
         if self.container:
-            self.container.stop()
+            self.container.stop() # type: ignore
             self.container = None
 
         if task_id is None:
