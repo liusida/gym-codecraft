@@ -7,7 +7,7 @@ import docker
 docker.from_env().containers.prune()
 
 env = gymnasium.make("gym_codecraft/CodeCraft-v0")
-obs = env.reset()
+obs, _ = env.reset()
 print(obs)
 
 actions = [
@@ -53,15 +53,20 @@ with open(output_file, 'w') as f:
 print("Numbers sorted and saved to output.txt.")
     """},
     {'action':'command', 'command':'python main.py'},
+    {'action':'command', 'command':'tree'},
     {'action':'command', 'command':'cat output.txt'},
     {'action':'submit'},
-    
+    {'action':'exit'},
+    {'action':'submit'},
 ]
 for action in actions:
     print(action)
-    obs, reward, _, _, _ = env.step(json.dumps(action))
+    obs, reward, terminated, _, _ = env.step(json.dumps(action))
     print(obs)
     if (reward != 0):
         print(f"Reward: {reward}")
+    if (terminated):
+        break
+    print()
 
 env.close()
