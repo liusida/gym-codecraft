@@ -22,7 +22,9 @@ class CodeCraftEnv(gym.Env):
             self.container = None
 
         if task_id is None:
-            return {"obs": "\n"}, {}
+            with open('welcome.txt', 'r') as file:
+                welcome = file.read()
+            return {"obs": welcome}, {}
         
         # read curriculum.json to get the task
         with open('curriculum.json', 'r') as file:
@@ -48,9 +50,10 @@ class CodeCraftEnv(gym.Env):
         act = None
         try:
             act = json.loads(action)
-        except:
+            act['action']
+        except Exception as e:
             reward = -1
-            observation = {"obs": "Invalid action"}
+            observation = {"obs": f"Invalid action: {e}"}
 
         if act:
             if act['action'] == 'reset':
@@ -83,6 +86,11 @@ class CodeCraftEnv(gym.Env):
                     reward = 1
                     observation = {"obs": "Code submitted."}
                 
+                elif act['action'] == 'exit':
+                    self.close()
+                    terminated = 1
+                    observation = {"obs": "Exited."}
+
                 # 999. Unknown action
                 else:
                     reward = -1
@@ -90,7 +98,7 @@ class CodeCraftEnv(gym.Env):
 
             else:
                 reward = -1
-                observation = {"obs": "No running container: please use `{'action':'reset', 'task_id':'?'}` to choose a task."}
+                observation = {"obs": 'No running container: please use `{"action":"reset", "task_id":"?"}` to choose a task.'}
             
 
 
