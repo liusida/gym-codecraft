@@ -10,7 +10,7 @@ class EnvLogger(gym.Wrapper):
             
         self.logging = logging.getLogger('envlogger')
         self.logging.setLevel(logging.DEBUG)
-        file_handler_a = logging.FileHandler('logs/env.log')
+        file_handler_a = logging.FileHandler('logs/env.log', encoding='utf-8')
         file_handler_a.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
         self.logging.addHandler(file_handler_a)
         
