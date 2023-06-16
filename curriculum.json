@@ -26,6 +26,15 @@
             "title": "Sort",
             "description": "Download the file at https://raw.githubusercontent.com/liusida/gym-codecraft/main/assets/3/input.txt, read the file to memory, create a list for the numbers, and sort them in ascend order. Finally, save them into `output.txt` in the working directory.",
             "test": "Check the content of `output.txt` is `1 2 3 4 5`."
+        },
+        "4": {
+            "category": "Python",
+            "docker": "python:alpine3.18",
+            "shell": "/bin/sh",
+            "working_dir": "/tmp",
+            "title": "Refactory a square root function",
+            "description": "Download and read the python file https://raw.githubusercontent.com/liusida/basics-zimo/main/sqrt-2.py, and refactor the file to make it more readable and professional. Please also contain unit test. Save new file as `sqrt.py`.",
+            "test": "Check python file `sqrt.py` works as expected."
         }
     }
 }
