@@ -5,6 +5,7 @@ import json
 import docker
 import tarfile
 import io
+import pkg_resources
 
 class CodeCraftEnv(gym.Env):
     def __init__(self):
@@ -22,12 +23,14 @@ class CodeCraftEnv(gym.Env):
             self.container = None
 
         if task_id is None:
-            with open('welcome.txt', 'r') as file:
+            welcome_path = pkg_resources.resource_filename('gym_codecraft', 'data/welcome.txt')
+            with open(welcome_path, 'r') as file:
                 welcome = file.read()
             return {"obs": welcome}, {}
         
         # read curriculum.json to get the task
-        with open('curriculum.json', 'r') as file:
+        curriculum_path = pkg_resources.resource_filename('gym_codecraft', 'data/curriculum.json')
+        with open(curriculum_path, 'r') as file:
             curriculum_data = json.load(file)
         if task_id in curriculum_data['tasks']:
             task = curriculum_data['tasks'][task_id]
