@@ -17,13 +17,15 @@ I'm using Windows, so `Docker Desktop` is needed. Also the Python library `docke
 
 The Python library `gymnasium`, which is the successor of the famous `gym`, is needed.
 
+We'll mostly use the clean and lightweight docker version [Alpine Linux](https://hub.docker.com/_/alpine/) for the tasks, but it'll be pulled automatically, no need to install in advance.
+
 # What to be expected?
 
 Running a task involves (1) pulling a specified docker Image, (2) creating a Volume as the agent's workspace, (3) running a Container in the background, (4) sending commands to the Container.
 
 Ending a task involves (1) stopping the Container, (2) leaving the Volume and the Image as it is. Overtime, Images, Volumes, Containers might be accumulated in Docker, please clean them as needed.
 
-We'll mostly use the clean and lightweight Alpine Linux.
+[An interesting review](docs/review.md) was written by gpt-4-0613, explaining the structure of this project. (This is one of the task in the curriculum.)
 
 # Running the demo
 
