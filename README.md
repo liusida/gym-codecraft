@@ -9,7 +9,7 @@ There are two seperate fields: Education and Learning.
 
 In the context of Reinforcement Learning, we can imagine two systems like this:
 
-<img src="images/env.png" alt="Reinforcement Learning" style="width:500px;" />
+<img src="images/env.png" alt="Reinforcement Learning" style="width:600px;" />
 
 # Requirements
 
