@@ -42,7 +42,7 @@
             "shell": "/bin/sh",
             "working_dir": "/tmp",
             "title": "Read and comprehend",
-            "description": "Install git, clone the repo github.com/liusida/gym-codecraft, read and comprehend the code in the project (but DON'T read the README.md), and write a technical review about the project. The review should be in the project root directory, named `review.md`.",
+            "description": "Install git, clone the repo github.com/liusida/gym-codecraft, read and comprehend the python code (DON'T look at no other files) in the project, and write a technical review about the project. The review should be in the project root directory, named `review.md`.",
             "test": "Check the commentary is in the project root directory."
         }
     }
