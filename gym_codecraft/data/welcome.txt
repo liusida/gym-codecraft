@@ -7,8 +7,8 @@ You can send me a JSON string as your action, for example: {"action":"command", 
 Here are some common action types we accept:
 
 - command: 
-    You need to specify the command parameter, which is the command you want to execute. The command will be run as /bin/sh -c <command>.
-    For example: {"action":"command", "command": "ls"}.
+    You need to specify the command parameter, which is the command you want to execute. The command will be run in a seperated session like this: ['/bin/sh', '-c', command].
+    For example: {"action":"command", "command": "cd /tmp && ls"}.
 
 - write_file: 
     You need to specify two parameters, path and content. path is the path for the file you want to write, and content is the content to be written to the file.
