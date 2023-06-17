@@ -1,5 +1,4 @@
 # Manually use ChatGPT to be the agent, try the environment out.
-import json
 import gymnasium
 import gym_codecraft
 from gym_codecraft.wrappers.envlogger import EnvLogger
