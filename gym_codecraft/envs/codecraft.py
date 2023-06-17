@@ -14,7 +14,7 @@ class CodeCraftEnv(gym.Env):
         self.client = docker.from_env()     # High-level client
         self.api_client = docker.APIClient() # Low-level client
         self.container = None
-        self.working_dir = "/"
+        self.working_dir = "/workspace"
         self.shell = "/bin/sh"
 
     def reset(self, task_id=None, seed=None, options=None):
@@ -36,9 +36,10 @@ class CodeCraftEnv(gym.Env):
             task = curriculum_data['tasks'][task_id]
             docker_image = task['docker']
             self.shell = task['shell']
-            self.working_dir = task['working_dir']
+            new_volume = self.client.volumes.create()
             self.pull_image(docker_image)
-            self.container = self.client.containers.run(docker_image, command=self.shell, working_dir=self.working_dir, 
+
+            self.container = self.client.containers.run(docker_image, volumes={new_volume.name: {'bind': self.working_dir, 'mode': 'rw'}}, working_dir=self.working_dir,  # type: ignore
                                                         detach=True, tty=True, remove=True)
             return {"obs": f"Task {task_id}:\n {task}\n"}, {}
 
