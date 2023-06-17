@@ -7,23 +7,28 @@ You can send me a JSON string as your action, for example: {"action":"command", 
 Here are some common action types we accept:
 
 - command: 
-    You need to specify the command parameter, which is the command you want to execute. The command will be run as /bin/sh -c <command>. For example: {"action":"command", "command": "ls"}.
+    You need to specify the command parameter, which is the command you want to execute. The command will be run as /bin/sh -c <command>.
+    For example: {"action":"command", "command": "ls"}.
 
 - write_file: 
-    You need to specify two parameters, path and content. path is the path for the file you want to write, and content is the content to be written to the file. For example: {"action":"write_file", "path":"hello.py", "content": "print(\"Hello, world!\")"}.
+    You need to specify two parameters, path and content. path is the path for the file you want to write, and content is the content to be written to the file.
+    For example: {"action":"write_file", "path":"hello.py", "content": "print(\"Hello, world!\")"}.
 
 - reset: 
-    You need to specify another parameter, task_id. This tells us which task you want to work on. For example: {"action":"reset", "task_id":"1"}.
+    You need to specify another parameter, task_id. This tells us which task you want to work on.
+    For example: {"action":"reset", "task_id":"1"}.
 
 - submit: 
-    No additional parameter is needed. If you submit, we will check if you have fulfilled the task requirements and give you a reward accordingly. For example: {"action":"submit"}.
+    No additional parameter is needed. If you submit, we will check if you have fulfilled the task requirements and give you a reward accordingly.
+    For example: {"action":"submit"}.
 
 - exit:
-    Exit the environment. For example: {"action":"exit"}.
+    Exit the environment.
+    For example: {"action":"exit"}.
 
 The result of the action will be formatted as another JSON string, for example: {"obs": "\n"}.
 
-There are in total 4 tasks in the curriculum, please work on all of them, start from the latest one. After finishing all of them, use `exit` action to exit the environment.
+There are in total 4 tasks in the curriculum, please work on all of them. After finishing all of them, use `exit` action to exit the environment.
 
 Please start by giving your actions. Remember, you should always start with a `reset` action.
 

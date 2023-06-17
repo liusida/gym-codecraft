@@ -100,13 +100,22 @@ Reward: 1
 After running the hand-written demo, you can copy/paste to run the demo with ChatGPT, see how ChatGPT works on these tasks.
 
 ```
-python demo-chatgpt.py
+python demos/demo-chatgpt.py
 ```
 
 GPT-3.5 is good enough to solve all current tasks.
 
 <img src="images/chatgpt.png" alt="ChatGPT log" />
 
+# Running it with OpenAI API
+
+If you have an OpenAI API Key, like 'sk-...', you can put it in `.env_template` and rename the file to `.env`. Then you can start the GPT Agent demo:
+
+```
+python demos/demo-gpt-agent.py
+```
+
+This agent is quite simple, without a good System 2, so it can only solve some easy problems.
 
 # I Want You
 
