@@ -17,7 +17,7 @@ os.chdir(project_root)
 env = gymnasium.make("gym_codecraft/CodeCraft-v0")
 env = EnvLogger(env)
 # Agent
-agent = GPTAgent()
+agent = GPTAgent(model="gpt-3.5-turbo-0613", using_function_call=False)
 
 # Start
 obs, _ = env.reset()

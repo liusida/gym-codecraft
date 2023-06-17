@@ -8,7 +8,9 @@ import logging
 from pathlib import Path
 
 class GPTAgent(BaseAgent):
-    def __init__(self):
+    def __init__(self, model="gpt-3.5-turbo-0613", using_function_call=False):
+        self.model = model
+        self.using_function_call = using_function_call
         # connect to openai api
         openai.api_key = os.getenv("OPENAI_API_KEY")
         self.messages_system = []
@@ -101,26 +103,35 @@ class GPTAgent(BaseAgent):
         
     def get_action(self, observation):
         try:
-            self.messages_task.append({"role": "user", "content": f"{observation}\nWhat's your next action? (respond with a function call)"})
-            self.logging.info(f"Task Messages: {self.messages_task}")
-            chat_completion = openai.ChatCompletion.create(model="gpt-3.5-turbo-0613",
-                                                           messages=(self.messages_system+self.messages_task),
-                                                           functions=self.functions,
-                                                           function_call="auto",  # auto is default, but we'll be explicit
-                                                           )
-            self.logging.info(f"Chat completion: {chat_completion}")
-            response_message = chat_completion["choices"][0]["message"] # type: ignore
-            if response_message.get("function_call"):
-                function_name = response_message["function_call"]["name"]
-                action_obj = {"action": function_name}
-                action_obj.update(json.loads(response_message["function_call"]["arguments"]))
-                action = json.dumps(action_obj)
-                if action_obj["action"] == "reset":
-                    self.messages_task = []
-                self.messages_task.append({"role": "assistant", "content": action})
+            if self.using_function_call:
+                self.messages_task.append({"role": "user", "content": f"{observation}\nWhat's your next action? (respond with a function call)"})
+                self.logging.info(f"Task Messages: {self.messages_task}")
+                chat_completion = openai.ChatCompletion.create(model=self.model,
+                                                            messages=(self.messages_system+self.messages_task),
+                                                            functions=self.functions,
+                                                            function_call="auto",  # auto is default, but we'll be explicit
+                                                            )
+                self.logging.info(f"Chat completion: {chat_completion}")
+                response_message = chat_completion["choices"][0]["message"] # type: ignore
+                if response_message.get("function_call"):
+                    function_name = response_message["function_call"]["name"]
+                    action_obj = {"action": function_name}
+                    action_obj.update(json.loads(response_message["function_call"]["arguments"]))
+                    action = json.dumps(action_obj)
+                else:
+                    self.logging.error(f"Error: function_call not found. {response_message}. Exit.")
+                    action = '{"action": "exit"}'
             else:
-                self.logging.error(f"Error: function_call not found. {response_message}. Exit.")
-                action = '{"action": "exit"}'
+                self.messages_task.append({"role": "user", "content": f"{observation}\nWhat's your next action? (respond in JSON format)"})
+                chat_completion = openai.ChatCompletion.create(model=self.model,
+                                                            messages=(self.messages_system+self.messages_task))
+                self.logging.info(f"Chat completion: {chat_completion}")
+                action = chat_completion["choices"][0]["message"]["content"] # type: ignore
+            action_obj = json.loads(action)
+            if action_obj["action"] == "reset":
+                self.messages_task = []
+            self.messages_task.append({"role": "assistant", "content": action})
+
         except Exception as e:
             self.logging.error(f"Error: Exception {e}. Exit.")
             action = '{"action": "exit"}'
