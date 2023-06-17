@@ -1,6 +1,6 @@
 {
     "tasks": {
-        "1": {
+        "5": {
             "category": "Python",
             "docker": "python:alpine3.18",
             "shell": "/bin/sh",
@@ -35,6 +35,15 @@
             "title": "Refactory a square root function",
             "description": "Download and read the python file https://raw.githubusercontent.com/liusida/basics-zimo/main/sqrt-2.py, and refactor the file to make it more readable and professional. Please also contain unit test. Save new file as `sqrt.py`.",
             "test": "Check python file `sqrt.py` works as expected."
+        },
+        "1": {
+            "category": "Python",
+            "docker": "python:alpine3.18",
+            "shell": "/bin/sh",
+            "working_dir": "/tmp",
+            "title": "Read and comprehend",
+            "description": "Install git, clone the repo github.com/liusida/gym-codecraft, read and comprehend the code in the project (but DON'T read the README.md), and write a technical review about the project. The review should be in the project root directory, named `review.md`.",
+            "test": "Check the commentary is in the project root directory."
         }
     }
 }
