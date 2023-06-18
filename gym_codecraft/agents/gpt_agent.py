@@ -125,12 +125,13 @@ class GPTAgent(BaseAgent):
                     action = '{"action": "exit"}'
             else:
                 self.messages_task.append({"role": "user", "content": f"{observation}\nWhat's your next action? (respond in JSON format)"})
+                self.logging.info(f"Task Messages: {self.messages_task}")
                 chat_completion = openai.ChatCompletion.create(model=self.model,
                                                             messages=(self.messages_system+self.messages_task))
                 self.logging.info(f"Chat completion: {chat_completion}")
                 action = chat_completion["choices"][0]["message"]["content"] # type: ignore
             action_obj = json.loads(action)
-            if action_obj["action"] == "reset":
+            if action_obj["action"] in ["reset", "start", "close", "exit", "submit"]:
                 self.messages_task = []
             self.messages_task.append({"role": "assistant", "content": action})
 
