@@ -20,7 +20,7 @@ actions = [
     {'action':'lol'}, # intentional error: unknow action
     {'action':'command', 'command':'pwd'},
     {'action':'write_file', 'path':'hello.py', 'content': 'print("Hello, world!")'},
-    {'action':'reset'},
+    {'action':'reset'}, # intentional error: reset the environment before submitting the answer
     {'action':'command', 'command':'ls'},
     {'action':'command', 'command':'cat hello.py'},
     {'action':'command', 'command':'python hello.py'},
