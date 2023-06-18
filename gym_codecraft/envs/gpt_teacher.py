@@ -49,22 +49,24 @@ class GPTTeacher(object):
             logs_directory.mkdir()
         self.logging = logging.getLogger('gpt_teacher')
         self.logging.setLevel(logging.DEBUG)
-        file_handler = logging.FileHandler('logs/gpt_teacher.log', encoding='utf-8')
-        file_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
-        self.logging.addHandler(file_handler)
+        if not self.logging.hasHandlers():
+            file_handler = logging.FileHandler('logs/gpt_teacher.log', encoding='utf-8')
+            file_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
+            self.logging.addHandler(file_handler)
 
         # Stream handler
-        stream_handler = logging.StreamHandler(sys.stdout)
-        stream_handler.setFormatter(ColorFormatter('%(asctime)s - %(levelname)s - %(message)s'))
+        # stream_handler = logging.StreamHandler(sys.stdout)
+        # stream_handler.setFormatter(ColorFormatter('%(asctime)s - %(levelname)s - %(message)s'))
         # self.logging.addHandler(stream_handler)
 
     def append_system_message(self, message):
         self.messages_system.append({"role": "system", "content": message})
         self.logging.info(f"System Messages: {self.messages_system}")
     
-    def get_score(self, task_description, container, shell):
+    def get_score(self, task_id, task_description, container, shell):
+        self.logging.info(f"Start grading Task {task_id}...")
         self.messages_task = []
-        self.messages_task.append({"role": "user", "content": f"The student is doing this task:\n{task_description}\n------\nNow he/she has submitted the solution. Please check the submission using command 'command'. You can use command 'grade' to give a score."})
+        self.messages_task.append({"role": "user", "content": f"The student is doing this task:\n{task_description}\n------\nNow the student has submitted the solution. Please check the submission using command 'command'. You can use command 'grade' to give a score."})
         observation = ""
         reward = 10
         comments = "Good job!"

@@ -178,5 +178,5 @@ class CodeCraftEnv(gym.Env):
         with open(welcome_path, 'r') as file:
             welcome = file.read()
         teacher.append_system_message(welcome)
-        reward, comments = teacher.get_score(self.current_task_description, self.container, self.shell)
+        reward, comments = teacher.get_score(self.current_task_id, self.current_task_description, self.container, self.shell)
         return reward, comments
