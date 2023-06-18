@@ -6,6 +6,7 @@ import docker
 import tarfile
 import io
 import pkg_resources
+from gym_codecraft.envs.gpt_teacher import GPTTeacher
 
 class CodeCraftEnv(gym.Env):
     def __init__(self):
@@ -69,8 +70,8 @@ class CodeCraftEnv(gym.Env):
 
                 elif action == 'submit':
                     # TODO: check the submission, give reward = 1 if correct
-                    reward = 1
-                    observation = {"obs": "Code submitted. Task closed. Please start a new task."}
+                    reward, comments = self.submit()
+                    observation = {"obs": f"Code submitted.\nThe teacher's comments: {comments}.\nThe score is: {reward}.\nTask closed. Please start a new task."}
                     self.close()
 
                 elif action == 'start':
@@ -110,7 +111,7 @@ class CodeCraftEnv(gym.Env):
             self.container = None
 
         if task_id is None:
-            welcome_path = pkg_resources.resource_filename('gym_codecraft', 'data/welcome.txt')
+            welcome_path = pkg_resources.resource_filename('gym_codecraft', 'data/for_student.txt')
             with open(welcome_path, 'r') as file:
                 welcome = file.read()
             return {"obs": welcome}, {}
@@ -130,7 +131,8 @@ class CodeCraftEnv(gym.Env):
 
             self.container = self.client.containers.run(docker_image, volumes={new_volume.name: {'bind': self.working_dir, 'mode': 'rw'}}, working_dir=self.working_dir,  # type: ignore
                                                         detach=True, tty=True, remove=True)
-            return {"obs": f"Task {task_id}:\n {task}\n"}, {}
+            self.current_task_description = f"Task {task_id}:\n {task}\n"
+            return {"obs": self.current_task_description}, {}
 
         else:
             return {"obs": f"Task {task_id} not found.\n"}, {}
@@ -139,7 +141,9 @@ class CodeCraftEnv(gym.Env):
     def close(self):
         if (self.container):
             self.container.stop() # type: ignore
+            self.container = None
         self.current_task_id = None
+        self.current_task_description = None
     
     def pull_image(self, docker_image, verbose=True):
         # Pull the image with progress updates
@@ -167,3 +171,12 @@ class CodeCraftEnv(gym.Env):
                             self.last_progress = ""
                         print(update['status'])
                         self.last_status = update['status']
+
+    def submit(self):
+        teacher = GPTTeacher()
+        welcome_path = pkg_resources.resource_filename('gym_codecraft', 'data/for_teacher.txt')
+        with open(welcome_path, 'r') as file:
+            welcome = file.read()
+        teacher.append_system_message(welcome)
+        reward, comments = teacher.get_score(self.current_task_description, self.container, self.shell)
+        return reward, comments
