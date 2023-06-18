@@ -29,72 +29,73 @@ class GPTAgent(BaseAgent):
         self.logging.addHandler(file_handler_a)
 
         # function call (New Feature from 0613)
-        self.functions = [
-                            {
-                                "name": "command",
-                                "description": "Execute a command in the Virtual Linux environment",
-                                "parameters": {
-                                    "type": "object",
-                                    "properties": {
-                                        "command": {
-                                            "type": "string",
-                                            "description": "The command to execute",
+        if self.using_function_call:
+            self.functions = [
+                                {
+                                    "name": "command",
+                                    "description": "Execute a command in the Virtual Linux environment",
+                                    "parameters": {
+                                        "type": "object",
+                                        "properties": {
+                                            "command": {
+                                                "type": "string",
+                                                "description": "The command to execute",
+                                            },
                                         },
+                                        "required": ["command"],
                                     },
-                                    "required": ["command"],
                                 },
-                            },
-                            {
-                                "name": "write_file",
-                                "description": "Write a file to the Virtual Linux environment",
-                                "parameters": {
-                                    "type": "object",
-                                    "properties": {
-                                        "content": {
-                                            "type": "string",
-                                            "description": "The content of the file to write",
+                                {
+                                    "name": "write_file",
+                                    "description": "Write a file to the Virtual Linux environment",
+                                    "parameters": {
+                                        "type": "object",
+                                        "properties": {
+                                            "content": {
+                                                "type": "string",
+                                                "description": "The content of the file to write",
+                                            },
                                         },
+                                        "required": ["content"],
                                     },
-                                    "required": ["content"],
                                 },
-                            },
-                            {
-                                "name": "reset",
-                                "description": "Reset the Virtual Linux environment, start another task",
-                                "parameters": {
-                                    "type": "object",
-                                    "properties": {
-                                        "task_id": {
-                                            "type": "string",
-                                            "description": "The ID of the task to start",
+                                {
+                                    "name": "reset",
+                                    "description": "Reset the Virtual Linux environment, start another task",
+                                    "parameters": {
+                                        "type": "object",
+                                        "properties": {
+                                            "task_id": {
+                                                "type": "string",
+                                                "description": "The ID of the task to start",
+                                            },
                                         },
+                                        "required": ["task_id"],
                                     },
-                                    "required": ["task_id"],
                                 },
-                            },
-                            {
-                                "name": "exit",
-                                "description": "Stop the Virtual Linux environment, end the conversation",
-                                "parameters": {
-                                    "type": "object",
-                                    "properties": {
-                                        
+                                {
+                                    "name": "exit",
+                                    "description": "Stop the Virtual Linux environment, end the conversation",
+                                    "parameters": {
+                                        "type": "object",
+                                        "properties": {
+                                            
+                                        },
+                                        "required": [],
                                     },
-                                    "required": [],
                                 },
-                            },
-                            {
-                                "name": "submit",
-                                "description": "Submit the answer to the task",
-                                "parameters": {
-                                    "type": "object",
-                                    "properties": {
-                                        
+                                {
+                                    "name": "submit",
+                                    "description": "Submit the answer to the task",
+                                    "parameters": {
+                                        "type": "object",
+                                        "properties": {
+                                            
+                                        },
+                                        "required": [],
                                     },
-                                    "required": [],
                                 },
-                            },
-                        ]
+                            ]
 
 
     def append_system_message(self, message):
