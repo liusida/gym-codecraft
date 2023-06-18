@@ -16,22 +16,23 @@ print(obs)
 actions = [
     {'action':'command', 'command': 'ls'}, # intentional error: no task yet.
 
-    {'action':'reset', 'task_id':'1'},
+    {'action':'start', 'task_id':'1'},
     {'action':'lol'}, # intentional error: unknow action
     {'action':'command', 'command':'pwd'},
     {'action':'write_file', 'path':'hello.py', 'content': 'print("Hello, world!")'},
+    {'action':'reset'},
     {'action':'command', 'command':'ls'},
     {'action':'command', 'command':'cat hello.py'},
     {'action':'command', 'command':'python hello.py'},
     {'action':'submit'},
 
-    {'action':'reset', 'task_id':'2'},
+    {'action':'start', 'task_id':'2'},
     {'action':'command', 'command':'apk update; apk add git'},
     {'action':'command', 'command': 'git --help'},
     {'action':'command', 'command':'git clone https://github.com/liusida/gym-codecraft.git .'},
     {'action':'submit'},
     
-    {'action':'reset', 'task_id':'3'},
+    {'action':'start', 'task_id':'3'},
     {'action':'command', 'command': 'apk update; apk add curl'},
     {'action':'command', 'command': 'curl -o input.txt https://raw.githubusercontent.com/liusida/gym-codecraft/main/assets/3/input.txt'},
     {'action':'command', 'command': 'cat input.txt'},

@@ -1,4 +1,4 @@
-Welcome to the CodeCraft learning environment.
+Welcome to the CodeCraft learning program.
 
 Your objective here is to gather as much reward as possible and learn new skills along the way.
 
@@ -7,29 +7,44 @@ You can send me a JSON string as your action, for example: {"action":"command", 
 Here are some common action types we accept:
 
 - command: 
-    You need to specify the command parameter, which is the command you want to execute. The command will be run in a seperated session like this: ['/bin/sh', '-c', command].
+    Execute a command in the virutal environment.
+    Parameters:
+        "command" (the command you want to execute. The command will be run in a seperated session like this: ['/bin/sh', '-c', command].)
     For example: {"action":"command", "command": "cd /tmp && ls"}.
 
-- write_file: 
-    You need to specify two parameters, path and content. path is the path for the file you want to write, and content is the content to be written to the file.
+- write_file:
+    Write a file to the virtual environment.
+    Parameters:
+        "path" (the path for the file you want to write)
+        "content" (the content to be written to the file)
     For example: {"action":"write_file", "path":"hello.py", "content": "print(\"Hello, world!\")"}.
 
+- start: 
+    Start a new environment for a task.
+    Parameters:
+        "task_id" (Which task you want to work on)
+    For example: {"action":"start", "task_id":"1"}.
+
 - reset: 
-    You need to specify another parameter, task_id. This tells us which task you want to work on.
-    For example: {"action":"reset", "task_id":"1"}.
+    Reset current environment for the current task.
+    For example: {"action":"reset"}.
+
+- close: 
+    Close current environment.
+    For example: {"action":"close"}.
 
 - submit: 
-    No additional parameter is needed. If you submit, we will check if you have fulfilled the task requirements and give you a reward accordingly.
+    Submit your solution for validation.
+    We will check how well you have fulfilled the task requirements and give you a reward accordingly.
+    The environment will close after giving you reward.
     For example: {"action":"submit"}.
 
 - exit:
-    Exit the environment.
+    Exit the whole program.
     For example: {"action":"exit"}.
 
 The result of the action will be formatted as another JSON string, for example: {"obs": "\n"}.
 
 There are in total 4 tasks in the curriculum, please work on all of them. After finishing all of them, use `exit` action to exit the environment.
-
-Please start by giving your actions. Remember, you should always start with a `reset` action.
 
 REMEMBER! You are supposed to ONLY reply in JSON format, each JSON string should contain less than 4096 characters.

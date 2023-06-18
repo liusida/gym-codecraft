@@ -17,7 +17,94 @@ class CodeCraftEnv(gym.Env):
         self.working_dir = "/workspace"
         self.shell = "/bin/sh"
 
-    def reset(self, task_id=None, seed=None, options=None):
+        self.current_task_id = None # the id of the task that the agent is currently working on, None means no task is started
+
+    def step(self, action:str):
+        """
+        avaiable actions: command(command), write_file(path, content), reset(), submit(), start(task_id), close(), exit()
+            - self.current_task_id needed:
+                - command(command): execute a shell command
+                - write_file(path, content): write a file to the container
+                - reset(): reset the container
+                - submit(): submit the answer to the task and close the container
+            - self.current_task_id not needed:
+                - start(task_id): start a new container for a new task
+                - close(): close the container
+                - exit(): exit the environment
+        """
+        terminated = False
+        info = {"info": ""}
+        observation = {"obs": ""}
+        reward = 0
+        action_obj = None
+
+        try:
+            action_obj = json.loads(action)
+            action = action_obj['action']
+            if action in ['command', 'write_file', 'reset', 'submit'] and self.current_task_id is None:
+                observation = {"obs": "No task started. Please use start action to start a task."}
+                reward = -1
+
+            else:
+                if action == 'command':
+                    exec_result = self.container.exec_run([self.shell, '-c', action_obj['command']]) # type: ignore
+                    observation = {"obs": exec_result.output.decode('utf-8')}
+
+                elif action == 'write_file':
+                    container_dest_path = action_obj['path']
+                    file_content = action_obj['content']
+                    tar_buffer = io.BytesIO()
+                    tar = tarfile.open(fileobj=tar_buffer, mode='w')
+                    tarinfo = tarfile.TarInfo(name=container_dest_path)
+                    tarinfo.size = len(file_content)
+                    tar.addfile(tarinfo, io.BytesIO(file_content.encode('utf-8')))
+                    tar.close()
+                    tar_bytes = tar_buffer.getvalue()
+                    # Copy the tarball to the container
+                    self.container.put_archive(path=self.working_dir, data=tar_bytes) # type: ignore
+                    observation = {"obs": f"File {container_dest_path} written."}
+
+                elif action == 'reset':
+                    observation, info = self.reset()
+
+                elif action == 'submit':
+                    # TODO: check the submission, give reward = 1 if correct
+                    reward = 1
+                    observation = {"obs": "Code submitted. Task closed. Please start a new task."}
+                    self.close()
+
+                elif action == 'start':
+                    observation, info = self.start(action_obj['task_id'])
+
+                elif action == 'close':
+                    self.close()
+                    observation = {"obs": "Task closed."}
+
+                elif action == 'exit':
+                    self.close()
+                    terminated = 1
+                    observation = {"obs": "Exited."}
+
+                else:
+                    observation = {"obs": f"Unknown action: {action}"}
+                    reward = -1
+
+        except Exception as e:
+            reward = -1
+            observation = {"obs": f"Invalid action error: {e}"}
+            action_obj = None
+
+        return observation, reward, terminated, False, info
+    
+    def render(self):
+        pass
+
+    def reset(self, seed=None, options=None):
+        return self.start(self.current_task_id, seed=seed, options=options)
+
+    def start(self, task_id=None, seed=None, options=None):
+        self.current_task_id = task_id
+
         if self.container:
             self.container.stop() # type: ignore
             self.container = None
@@ -32,12 +119,14 @@ class CodeCraftEnv(gym.Env):
         curriculum_path = pkg_resources.resource_filename('gym_codecraft', 'data/curriculum.json')
         with open(curriculum_path, 'r') as file:
             curriculum_data = json.load(file)
+
         if task_id in curriculum_data['tasks']:
             task = curriculum_data['tasks'][task_id]
             docker_image = task['docker']
             self.shell = task['shell']
             new_volume = self.client.volumes.create()
-            self.pull_image(docker_image)
+            
+            self.pull_image(docker_image) # explicitly pull the image to show the progress updates
 
             self.container = self.client.containers.run(docker_image, volumes={new_volume.name: {'bind': self.working_dir, 'mode': 'rw'}}, working_dir=self.working_dir,  # type: ignore
                                                         detach=True, tty=True, remove=True)
@@ -46,77 +135,14 @@ class CodeCraftEnv(gym.Env):
         else:
             return {"obs": f"Task {task_id} not found.\n"}, {}
 
-    def step(self, action:str):
-        terminated = False
-        info = {"info": ""}
-        observation = {"obs": ""}
-        reward = 0
-        act = None
-        try:
-            act = json.loads(action)
-            act['action']
-        except Exception as e:
-            reward = -1
-            observation = {"obs": f"Invalid action: {e}"}
-
-        if act:
-            if act['action'] == 'reset':
-                observation, info = self.reset(act['task_id'])
-
-            elif self.container:
-                # 1. Shell Command
-                if act['action'] == 'command':
-                    exec_result = self.container.exec_run([self.shell, '-c', act['command']]) # type: ignore
-                    observation = {"obs": exec_result.output.decode('utf-8')}
-                
-                # 2. Write a File
-                elif act['action'] == 'write_file':
-                    container_dest_path = act['path']
-                    file_content = act['content']
-                    tar_buffer = io.BytesIO()
-                    tar = tarfile.open(fileobj=tar_buffer, mode='w')
-                    tarinfo = tarfile.TarInfo(name=container_dest_path)
-                    tarinfo.size = len(file_content)
-                    tar.addfile(tarinfo, io.BytesIO(file_content.encode('utf-8')))
-                    tar.close()
-                    tar_bytes = tar_buffer.getvalue()
-                    # Copy the tarball to the container
-                    self.container.put_archive(path=self.working_dir, data=tar_bytes) # type: ignore
-                    observation = {"obs": f"File {container_dest_path} written."}
-
-                # 3. Submit the code
-                elif act['action'] == 'submit':
-                    # TODO: check the submission, give reward = 1 if correct
-                    reward = 1
-                    observation = {"obs": "Code submitted."}
-                
-                elif act['action'] == 'exit':
-                    self.close()
-                    terminated = 1
-                    observation = {"obs": "Exited."}
-
-                # 999. Unknown action
-                else:
-                    reward = -1
-                    observation = {"obs": f"Unknown action: {act['action']}"}
-
-            else:
-                reward = -1
-                observation = {"obs": 'No running container: please use `{"action":"reset", "task_id":"?"}` to choose a task.'}
-            
-
-
-        return observation, reward, terminated, False, info
-    
-    def render(self):
-        pass
 
     def close(self):
         if (self.container):
             self.container.stop() # type: ignore
+        self.current_task_id = None
     
     def pull_image(self, docker_image, verbose=True):
-        # Pull the Alpine image and get the response
+        # Pull the image with progress updates
         response = self.api_client.pull(docker_image, stream=True)
         self.last_status = ""
         self.last_progress = ""

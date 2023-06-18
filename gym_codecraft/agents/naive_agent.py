@@ -6,7 +6,7 @@ class NaiveAgent(BaseAgent):
     def __init__(self):
         self.action_space = [
             {"action": "command", "command": "ls"},
-            {"action": "reset", "task_id": "1"},
+            {"action": "start", "task_id": "1"},
             {"action": "exit"},
         ]
     

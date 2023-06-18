@@ -60,8 +60,8 @@ class GPTAgent(BaseAgent):
                                     },
                                 },
                                 {
-                                    "name": "reset",
-                                    "description": "Reset the Virtual Linux environment, start another task",
+                                    "name": "start",
+                                    "description": "Start the Virtual Linux environment for task",
                                     "parameters": {
                                         "type": "object",
                                         "properties": {
