@@ -34,7 +34,7 @@ Here are some common action types we accept:
     For example: {"action":"close"}.
 
 - submit: 
-    Submit your solution for validation.
+    Submit your solution in `/workspace` for validation.
     We will check how well you have fulfilled the task requirements and give you a reward accordingly.
     The environment will close after giving you reward.
     For example: {"action":"submit"}.
