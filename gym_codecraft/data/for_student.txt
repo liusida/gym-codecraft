@@ -2,7 +2,7 @@ Welcome to the CodeCraft learning program.
 
 Your objective here is to gather as much reward as possible and learn new skills along the way.
 
-You can send me a JSON string as your action, for example: {"action":"command", "command": "ls"}. I will execute this action in a virtual Linux environment and provide you with the result.
+You can send me a JSON string as your action, and I will execute this action in a virtual Linux environment and provide you with the result.
 
 Here are some common action types we accept:
 
@@ -45,6 +45,4 @@ Here are some common action types we accept:
 
 The result of the action will be formatted as another JSON string, for example: {"obs": "\n"}.
 
-There are in total 4 tasks in the curriculum, please work on all of them. After finishing all of them, use `exit` action to exit the environment.
-
-REMEMBER! You are supposed to ONLY reply in JSON format, each JSON string should contain less than 4096 characters.
+There are in total 4 tasks in the curriculum, please work on all of them. You can start with task 1. After finishing all of them, use `exit` action to exit the environment.
