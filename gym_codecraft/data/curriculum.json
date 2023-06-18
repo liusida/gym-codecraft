@@ -1,10 +1,9 @@
 {
     "tasks": {
-        "5": {
+        "1": {
             "category": "Python",
             "docker": "python:alpine3.18",
             "shell": "/bin/sh",
-            "working_dir": "/tmp",
             "title": "Hello World",
             "description": "Write a Python file `hello.py` printing the string 'Hello, World!'",
             "test": "Entering the command `python hello.py` should print the string 'Hello, World!'"
@@ -13,7 +12,6 @@
             "category": "Git",
             "docker": "alpine:3.18",
             "shell": "/bin/sh",
-            "working_dir": "/tmp",
             "title": "Git Clone",
             "description": "Use `apk add git` to install git. Clone a repo from github, using the URL https://github.com/liusida/gym-codecraft.git",
             "test": "Check the gym-codecraft repo is in the working directory"
@@ -22,7 +20,6 @@
             "category": "Python",
             "docker": "python:alpine3.18",
             "shell": "/bin/sh",
-            "working_dir": "/tmp",
             "title": "Sort",
             "description": "Download the file at https://raw.githubusercontent.com/liusida/gym-codecraft/main/gym_codecraft/data/3/input.txt, read the file to memory, create a list for the numbers, and sort them in ascend order. Finally, save them into `output.txt` in the working directory.",
             "test": "Check the content of `output.txt` is `1 2 3 4 5`."
@@ -31,16 +28,14 @@
             "category": "Python",
             "docker": "python:alpine3.18",
             "shell": "/bin/sh",
-            "working_dir": "/tmp",
             "title": "Refactory a square root function",
             "description": "Download and read the python file https://raw.githubusercontent.com/liusida/basics-zimo/main/sqrt-2.py, and refactor the file to make it more readable and professional. Please also contain unit test. Save new file as `sqrt.py`.",
             "test": "Check python file `sqrt.py` works as expected."
         },
-        "1": {
+        "5": {
             "category": "Python",
             "docker": "python:alpine3.18",
             "shell": "/bin/sh",
-            "working_dir": "/tmp",
             "title": "Read and comprehend",
             "description": "Install git, clone the repo github.com/liusida/gym-codecraft, read and comprehend the python code (DON'T look at no other files) in the project, and write a technical review about the project. The review should be in the project root directory, named `review.md`.",
             "test": "Check the commentary is in the project root directory."
