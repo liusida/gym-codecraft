@@ -125,13 +125,17 @@ class CodeCraftEnv(gym.Env):
             task = curriculum_data['tasks'][task_id]
             docker_image = task['docker']
             self.shell = task['shell']
+            
+            self.current_task_description_for_teacher = f"Task {task_id}:\n {task}\n"
+            # remove the for_teacher field to avoid leaking the solution to the student
+            task.pop('for_teacher')
+            self.current_task_description = f"Task {task_id}:\n {task}\n"
             new_volume = self.client.volumes.create()
             
             self.pull_image(docker_image) # explicitly pull the image to show the progress updates
 
             self.container = self.client.containers.run(docker_image, volumes={new_volume.name: {'bind': self.working_dir, 'mode': 'rw'}}, working_dir=self.working_dir,  # type: ignore
                                                         detach=True, tty=True, remove=True)
-            self.current_task_description = f"Task {task_id}:\n {task}\n"
             return {"obs": self.current_task_description}, {}
 
         else:
@@ -178,5 +182,5 @@ class CodeCraftEnv(gym.Env):
         with open(welcome_path, 'r') as file:
             welcome = file.read()
         teacher.append_system_message(welcome)
-        reward, comments = teacher.get_score(self.current_task_id, self.current_task_description, self.container, self.shell)
+        reward, comments = teacher.get_score(self.current_task_id, self.current_task_description_for_teacher, self.container, self.shell)
         return reward, comments
