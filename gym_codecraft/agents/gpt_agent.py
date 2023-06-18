@@ -24,9 +24,10 @@ class GPTAgent(BaseAgent):
             logs_directory.mkdir()
         self.logging = logging.getLogger('gpt_agent')
         self.logging.setLevel(logging.DEBUG)
-        file_handler = logging.FileHandler('logs/gpt.log', encoding='utf-8')
-        file_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
-        self.logging.addHandler(file_handler)
+        if not self.logging.hasHandlers():
+            file_handler = logging.FileHandler('logs/gpt_agent.log', encoding='utf-8')
+            file_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
+            self.logging.addHandler(file_handler)
 
         # function call (New Feature from 0613)
         if self.using_function_call:
